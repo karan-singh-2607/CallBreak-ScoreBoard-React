@@ -1,0 +1,11 @@
+.editing {
+  background-color: rgb(151, 148, 148);
+  color: white;
+}
+.not-editing {
+  color: rgb(7, 104, 250);
+  font-weight: 700;
+}
+.not-editing:hover {
+  cursor: pointer;
+}
