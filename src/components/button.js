@@ -3,17 +3,17 @@ import styled from "styled-components";
 
 const StyledButton = styled.button`
   border: 1px solid black;
-  background: none;
   outline: none;
   padding: 5px;
   color: white;
   border-radius: 5px;
-  background: rgb(28, 184, 65);
+  background-color: ${props => (props.allowClick ? "#166730" : "gray")};
   font-size: 1em;
-  width: auto;
+  width: 120px;
+  height: 50px;
   &:hover {
-    background: green;
-    cursor: pointer;
+    background: ${props => (props.allowClick ? "green" : "gray")};
+    cursor: ${props => (props.allowClick ? "pointer" : "none")};
   }
 `;
 
@@ -26,7 +26,7 @@ export default class Button extends React.Component {
     return (
       <StyledButton
         onClick={this.handleClick}
-        style={{ width: this.props.width, height: this.props.height }}
+        allowClick={this.props.allowClick}
       >
         {this.props.label}
       </StyledButton>

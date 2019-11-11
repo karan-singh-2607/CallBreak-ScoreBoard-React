@@ -13,20 +13,20 @@ export default class TableHead extends React.Component {
     return (
       <thead>
         <tr>
-          <HeaderCell width="120">
+          <HeaderCell width="100">
             <strong>Game</strong>
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="Player 1" />
+            <PlayerName name="p1" />
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="Player 2" />
+            <PlayerName name="p2" />
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="Player 3" />
+            <PlayerName name="p3" />
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="Player 4" />
+            <PlayerName name="p4" />
           </HeaderCell>
         </tr>
       </thead>
