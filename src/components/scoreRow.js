@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const GameCell = styled.td`
   text-align: center;
-  background-color: lightpink;
+  background-color: #b0e6b4;
   padding: 3px;
 `;
 
