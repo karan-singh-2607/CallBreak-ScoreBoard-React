@@ -7,6 +7,7 @@ import TableHead from "./components/tableHead";
 import TableBottom from "./components/tableBottom";
 import ScoreRow from "./components/scoreRow";
 import uuid from "uuid";
+import { Helmet } from "react-helmet";
 
 import "./styles.css";
 
@@ -171,6 +172,10 @@ export default class App extends React.Component {
 
     return (
       <div className="App">
+        <Helmet>
+          <meta charSet="utf-8" />
+          <title>Callbreak</title>
+        </Helmet>
         <header style={{ height: "60px", textAlign: "left", width: "100%" }}>
           <h1>Callbreak</h1>
         </header>
