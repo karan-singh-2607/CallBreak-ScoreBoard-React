@@ -171,8 +171,8 @@ export default class App extends React.Component {
 
     return (
       <div className="App">
-        <header style={{ height: "60px" }}>
-          <h1>callbreak</h1>
+        <header style={{ height: "60px", textAlign: "left", width: "100%" }}>
+          <h1>Callbreak</h1>
         </header>
         <div style={{ minHeight: "calc(100vh - 150px)" }}>
           <div style={{ display: "flex", justifyContent: "center" }}>
