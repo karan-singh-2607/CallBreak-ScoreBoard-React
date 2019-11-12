@@ -1,20 +1,25 @@
 {
-  "name": "new",
+  "name": "callbreak",
   "version": "1.0.0",
-  "description": "",
+  "description": "an app to record callbreak scores",
+  "homepage": "https://darshanbaral.github.io/callbreak",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "gh-pages": "^2.1.1",
     "react": "16.8.6",
     "react-contenteditable": "3.3.2",
     "react-dom": "16.11.0",
     "react-scripts": "3.0.1",
-    "styled-components": "4.4.1"
+    "styled-components": "4.4.1",
+    "uuid": "3.3.3"
   },
   "devDependencies": {
     "typescript": "3.3.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
