@@ -5,9 +5,10 @@ const Input = styled.input`
   text-align: center;
   border: none;
   width: 99%;
-  height: 48px;
+  height: 28px;
   margin: auto;
   display: block;
+  font-size: 1em;
   background-color: ${props => (props.valid ? "none" : "#d75d5d")};
   &:focus {
     outline: none;
@@ -17,10 +18,9 @@ const Input = styled.input`
 export default class ScoreInput extends React.Component {
   state = { value: "", placeholder: "0", valid: true };
   handleChange = event => {
+    const [min, max] = this.props.gameState === "call" ? [1, 8] : [0, 13];
     const val = Number(event.target.value);
-    const min = this.props.gameState === "call" ? 1 : 0;
-    const max = this.props.gameState === "call" ? 8 : 10;
-    if (val < min || val > max) {
+    if (val < min || val > max || isNaN(val)) {
       this.setState({ valid: false });
     } else {
       this.setState({ valid: true });

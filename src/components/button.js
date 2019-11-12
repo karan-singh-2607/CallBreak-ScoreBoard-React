@@ -11,6 +11,8 @@ const StyledButton = styled.button`
   font-size: 1em;
   width: 120px;
   height: 50px;
+  margin-right: 20px;
+  margin-left: 20px;
   &:hover {
     background: ${props => (props.allowClick ? "green" : "gray")};
     cursor: ${props => (props.allowClick ? "pointer" : "none")};

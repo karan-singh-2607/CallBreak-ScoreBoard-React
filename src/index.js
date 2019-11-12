@@ -6,16 +6,16 @@ import ScoreInput from "./components/scoreInput";
 import TableHead from "./components/tableHead";
 import TableBottom from "./components/tableBottom";
 import ScoreRow from "./components/scoreRow";
+import uuid from "uuid";
 
 import "./styles.css";
 
 const InputCell = styled.td`
   min-width: 50px;
-  border: 2px solid rgb(7, 104, 250);
+  border: 1px solid rgb(7, 104, 250);
 `;
 
 const ErrorDiv = styled.div`
-  text-align: center;
   color: red;
   display: ${props => (props.error ? "block" : "none")};
 `;
@@ -30,7 +30,8 @@ export default class App extends React.Component {
     p3: 0,
     p4: 0,
     allowClick: true,
-    error: false
+    error: false,
+    messages: []
   };
 
   playerCalls = [];
@@ -41,19 +42,49 @@ export default class App extends React.Component {
       gameNumber: 0,
       gameState: "call",
       label: "Record Calls",
-      allowClick: true
+      allowClick: true,
+      messages: [],
+      error: false
     });
     this.playerCalls = [];
     this.playerScores = [];
     this.processedScores = [];
   };
 
-  isValid = (ar, minimum, maximum, total) => {
+  isValid = ar => {
+    let [minimum, maximum, total] =
+      this.state.gameState === "call" ? [1, 8, 32] : [0, 13, 13];
+    let valName = this.state.gameState === "call" ? "calls" : "hands";
+    let allMessages = [
+      "each input for " + valName + " must be an integer.",
+      "each input for " +
+        valName +
+        " must be greater than than " +
+        minimum +
+        ".",
+      "each input for " + valName + " must be smaller than " + maximum + ".",
+      this.state.gameState === "call"
+        ? "total of calls must be smaller than " + total + "."
+        : "total of hands must be equal to 13."
+    ];
     let check = [];
+    let messages = [];
     check.push(ar.some(el => isNaN(el)));
     check.push(ar.some(el => Number(el) < minimum));
     check.push(ar.some(el => Number(el) > maximum));
-    check.push(ar.reduce((a, b) => Number(a) + Number(b), 0) > total);
+
+    if (this.state.gameState === "call") {
+      check.push(ar.reduce((a, b) => Number(a) + Number(b), 0) > total);
+    } else {
+      check.push(ar.reduce((a, b) => Number(a) + Number(b), 0) !== total);
+    }
+
+    check.forEach((el, i) => {
+      if (el) {
+        messages.push(allMessages[i]);
+      }
+    });
+    this.setState({ messages: messages });
     return !check.some(el => el);
   };
 
@@ -72,7 +103,7 @@ export default class App extends React.Component {
   gameCount = 5;
 
   handleScoreInput = ar => {
-    if (this.isValid(ar, 0, 13, 13)) {
+    if (this.isValid(ar)) {
       this.setState({ gameNumber: this.state.gameNumber + 1, error: false });
       let procScores = this.processScores(
         ar,
@@ -92,10 +123,10 @@ export default class App extends React.Component {
   };
 
   handleCallInput = ar => {
-    if (this.isValid(ar, 1, 8, 32)) {
+    if (this.isValid(ar)) {
       this.setState({
         gameState: "play",
-        label: "Record Scores",
+        label: "Record Hands",
         error: false
       });
       this.playerCalls.push(ar);
@@ -125,12 +156,17 @@ export default class App extends React.Component {
     for (let i = 0; i < this.playerCalls.length; i++) {
       rows.push(
         <ScoreRow
-          key={"scoreRow-" + i}
+          key={uuid.v4()}
           gameNumber={i}
           calls={this.playerCalls}
           processedScores={this.processedScores}
         />
       );
+    }
+
+    let errorMessages = [];
+    for (let i = 0; i < this.state.messages.length; i++) {
+      errorMessages.push(<li key={uuid.v4()}>{this.state.messages[i]}</li>);
     }
 
     return (
@@ -139,7 +175,7 @@ export default class App extends React.Component {
           <h1>callbreak</h1>
         </header>
         <div style={{ minHeight: "calc(100vh - 150px)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <Button
               label={this.state.label}
               allowClick={this.state.allowClick}
@@ -148,7 +184,7 @@ export default class App extends React.Component {
             <Button label="New Game" allowClick={true} onClick={this.newGame} />
           </div>
           <hr />
-          <table style={{ width: "90%", margin: "auto", minWidth: "300px" }}>
+          <table>
             <TableHead />
             <tbody>
               <tr>
@@ -189,7 +225,8 @@ export default class App extends React.Component {
             </tbody>
           </table>
           <ErrorDiv error={this.state.error}>
-            <h3>Warning! The input is not valid.</h3>
+            <h3>The input is not valid.</h3>
+            <ul>{errorMessages}</ul>
           </ErrorDiv>
         </div>
         <footer style={{ height: "60px", textAlign: "center" }}>
