@@ -70,7 +70,7 @@ export default class App extends React.Component {
     ];
     let check = [];
     let messages = [];
-    check.push(ar.some(el => isNaN(el)));
+    check.push(ar.some(el => !Number.isInteger(Number(el))));
     check.push(ar.some(el => Number(el) < minimum));
     check.push(ar.some(el => Number(el) > maximum));
 
