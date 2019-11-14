@@ -34,6 +34,7 @@ export default class ScoreInput extends React.Component {
   handleFocus = () => {
     this.setState({ placeholder: "" });
     this.setState({ value: "" });
+    this.props.onChange(this.props.id, 0);
   };
   render() {
     return (
