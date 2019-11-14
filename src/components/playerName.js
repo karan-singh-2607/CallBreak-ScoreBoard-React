@@ -12,7 +12,7 @@ const Input = styled.input`
   font-weight: 700;
   color: ${props => (props.editing ? "white" : "rgb(7, 104, 250)")};
   background-color: ${props =>
-    props.editing ? "rgb(151, 148, 148)" : "white"};
+    props.editing ? "#286cc440" : "white"};
   &:hover {
     cursor: ${props => (props.editing ? "initial" : "pointer")};
   }

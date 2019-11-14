@@ -13,6 +13,7 @@ import "./styles.css";
 
 const InputCell = styled.td`
   min-width: 50px;
+  height: 30px;
   border: 1px solid rgb(7, 104, 250);
 `;
 
@@ -194,7 +195,7 @@ export default class App extends React.Component {
             <tbody>
               <tr>
                 <td style={{ textAlign: "center", border: "solid 1px black" }}>
-                  ongoing
+                  Ongoing
                 </td>
                 <InputCell>
                   <ScoreInput

@@ -5,6 +5,8 @@ import styled from "styled-components";
 const HeaderCell = styled.td`
   text-align: center;
   padding: 3px;
+  height: 35px;
+  border: solid 1px black;
 `;
 
 export default class TableBottom extends React.Component {
