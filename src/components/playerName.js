@@ -10,9 +10,8 @@ const Input = styled.input`
   height: 30px;
   font-size: 1em;
   font-weight: 700;
-  color: ${props => (props.editing ? "white" : "rgb(7, 104, 250)")};
-  background-color: ${props =>
-    props.editing ? "#286cc440" : "white"};
+  color: ${props => (props.editing ? "white" : "#2962ff")};
+  background-color: ${props => (props.editing ? "#286cc440" : "white")};
   &:hover {
     cursor: ${props => (props.editing ? "initial" : "pointer")};
   }
@@ -20,10 +19,10 @@ const Input = styled.input`
 
 export default class PlayerName extends React.Component {
   state = {
-      value: this.props.name,
-      editing: false
-    };
-  
+    value: this.props.name,
+    editing: false
+  };
+
   handleChange = event => {
     this.setState({ value: event.target.value });
   };

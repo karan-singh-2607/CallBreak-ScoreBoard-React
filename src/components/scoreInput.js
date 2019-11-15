@@ -11,7 +11,7 @@ const Input = styled.input`
   font-size: 1em;
   background-color: ${props => (props.valid ? "#286cc440" : "#d75d5d")};
   &:focus {
-    outline: solid 1px;
+    outline: solid 1px #2962ff;
   }
 `;
 
@@ -34,7 +34,6 @@ export default class ScoreInput extends React.Component {
   handleFocus = () => {
     this.setState({ placeholder: "" });
     this.setState({ value: "" });
-    this.props.onChange(this.props.id, 0);
   };
   render() {
     return (
