@@ -14,7 +14,7 @@ import "./styles.css";
 const InputCell = styled.td`
   min-width: 50px;
   height: 30px;
-  border: 1px solid rgb(7, 104, 250);
+  border: 1px solid;
 `;
 
 const ErrorDiv = styled.div`
@@ -24,6 +24,8 @@ const ErrorDiv = styled.div`
 
 export default class App extends React.Component {
   state = {
+    round: 0,
+    roundComplete: false,
     gameNumber: 0,
     gameState: "call",
     label: "Record Calls",
@@ -35,15 +37,21 @@ export default class App extends React.Component {
     error: false,
     messages: []
   };
-
+  rounds = { p1: [], p2: [], p3: [], p4: [] };
   playerCalls = [];
   playerScores = [];
   processedScores = [];
-  newGame = () => {
+  newRound = () => {
     this.setState({
+      round: this.state.round + 1,
+      roundComplete: false,
       gameNumber: 0,
       gameState: "call",
       label: "Record Calls",
+      p1: 0,
+      p2: 0,
+      p3: 0,
+      p4: 0,
       allowClick: true,
       messages: [],
       error: false
@@ -96,7 +104,7 @@ export default class App extends React.Component {
       if (Number(scores[i]) >= Number(calls[i])) {
         procScores[i] = calls[i] + "." + (Number(scores[i]) - Number(calls[i]));
       } else {
-        procScores[i] = -1 * Number(calls[i]) + ".0";
+        procScores[i] = -1 * Number(calls[i]);
       }
     }
     return procScores;
@@ -116,7 +124,11 @@ export default class App extends React.Component {
       if (this.state.gameNumber < this.gameCount - 1) {
         this.setState({ label: "Record Calls" });
       } else {
-        this.setState({ label: "Game Over!!!", allowClick: false });
+        this.setState({
+          label: "Game Over!!!",
+          roundComplete: true,
+          allowClick: false
+        });
       }
       this.setState({ gameState: "call" });
     } else {
@@ -187,13 +199,17 @@ export default class App extends React.Component {
               allowClick={this.state.allowClick}
               onClick={this.handleClick}
             />
-            <Button label="New Game" allowClick={true} onClick={this.newGame} />
+            <Button
+              label="New Round"
+              allowClick={true}
+              onClick={this.newRound}
+            />
           </div>
           <hr />
           <table>
             <TableHead />
             <tbody>
-              <tr>
+              <tr key={"Round" + this.state.round}>
                 <td style={{ textAlign: "center", border: "solid 1px black" }}>
                   Ongoing
                 </td>
