@@ -111,7 +111,7 @@ export default class App extends React.Component {
   };
 
   gameCount = 5;
-
+  order = ["p1", "p2", "p3", "p4"];
   handleScoreInput = ar => {
     if (this.isValid(ar)) {
       this.setState({ gameNumber: this.state.gameNumber + 1, error: false });
@@ -129,6 +129,12 @@ export default class App extends React.Component {
           roundComplete: true,
           allowClick: false
         });
+
+        let totals = this.processedScores.reduce(
+          (r, a) => a.map((b, i) => Number(r[i] || 0) + Number(b)),
+          []
+        );
+        totals.map((val, ind) => this.rounds[this.order[ind]].push(val));
       }
       this.setState({ gameState: "call" });
     } else {
