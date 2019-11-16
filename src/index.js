@@ -25,6 +25,7 @@ const ErrorDiv = styled.div`
 export default class App extends React.Component {
   state = {
     round: 0,
+    ongoingRound: 1,
     roundComplete: false,
     gameNumber: 0,
     gameState: "call",
@@ -35,14 +36,18 @@ export default class App extends React.Component {
     p4: 0,
     allowClick: true,
     error: false,
-    messages: []
+    errorMessages: []
   };
   rounds = { p1: [], p2: [], p3: [], p4: [] };
   playerCalls = [];
   playerScores = [];
   processedScores = [];
+
   newRound = () => {
     this.setState({
+      ongoingRound: this.state.roundComplete
+        ? this.state.ongoingRound + 1
+        : this.state.ongoingRound,
       round: this.state.round + 1,
       roundComplete: false,
       gameNumber: 0,
@@ -53,7 +58,7 @@ export default class App extends React.Component {
       p3: 0,
       p4: 0,
       allowClick: true,
-      messages: [],
+      errorMessages: [],
       error: false
     });
     this.playerCalls = [];
@@ -64,21 +69,21 @@ export default class App extends React.Component {
   isValid = ar => {
     let [minimum, maximum, total] =
       this.state.gameState === "call" ? [1, 8, 32] : [0, 13, 13];
-    let valName = this.state.gameState === "call" ? "calls" : "hands";
-    let allMessages = [
-      "each input for " + valName + " must be an integer.",
+    let inputType = this.state.gameState === "call" ? "calls" : "hands";
+    let allErrorMessages = [
+      "each input for " + inputType + " must be an integer.",
       "each input for " +
-        valName +
+        inputType +
         " must be greater than than " +
         minimum +
         ".",
-      "each input for " + valName + " must be smaller than " + maximum + ".",
+      "each input for " + inputType + " must be smaller than " + maximum + ".",
       this.state.gameState === "call"
         ? "total of calls must be smaller than " + total + "."
         : "total of hands must be equal to 13."
     ];
     let check = [];
-    let messages = [];
+    let errorMessages = [];
     check.push(ar.some(el => !Number.isInteger(Number(el))));
     check.push(ar.some(el => Number(el) < minimum));
     check.push(ar.some(el => Number(el) > maximum));
@@ -91,23 +96,24 @@ export default class App extends React.Component {
 
     check.forEach((el, i) => {
       if (el) {
-        messages.push(allMessages[i]);
+        errorMessages.push(allErrorMessages[i]);
       }
     });
-    this.setState({ messages: messages });
+    this.setState({ errorMessages: errorMessages });
     return !check.some(el => el);
   };
 
-  processScores = (scores, calls) => {
-    let procScores = [];
-    for (let i = 0; i < scores.length; i++) {
-      if (Number(scores[i]) >= Number(calls[i])) {
-        procScores[i] = calls[i] + "." + (Number(scores[i]) - Number(calls[i]));
+  processScores = (hands, calls) => {
+    let processedScores = [];
+    for (let i = 0; i < hands.length; i++) {
+      if (Number(hands[i]) >= Number(calls[i])) {
+        processedScores[i] =
+          calls[i] + "." + (Number(hands[i]) - Number(calls[i]));
       } else {
-        procScores[i] = -1 * Number(calls[i]);
+        processedScores[i] = -1 * Number(calls[i]);
       }
     }
-    return procScores;
+    return processedScores;
   };
 
   gameCount = 5;
@@ -125,7 +131,7 @@ export default class App extends React.Component {
         this.setState({ label: "Record Calls" });
       } else {
         this.setState({
-          label: "Game Over!!!",
+          label: "Round Over!!!",
           roundComplete: true,
           allowClick: false
         });
@@ -135,6 +141,8 @@ export default class App extends React.Component {
           []
         );
         totals.map((val, ind) => this.rounds[this.order[ind]].push(val));
+        console.log(this.rounds);
+        console.log(this.rounds);
       }
       this.setState({ gameState: "call" });
     } else {
@@ -156,7 +164,7 @@ export default class App extends React.Component {
   };
 
   handleClick = () => {
-    if (this.state.label === "Game Over!!!") {
+    if (this.state.label === "Round Over!!!") {
       return;
     }
     const { p1, p2, p3, p4 } = this.state;
@@ -184,19 +192,57 @@ export default class App extends React.Component {
       );
     }
 
-    let errorMessages = [];
-    for (let i = 0; i < this.state.messages.length; i++) {
-      errorMessages.push(<li key={uuid.v4()}>{this.state.messages[i]}</li>);
+    let allErrorMessages = [];
+    for (let i = 0; i < this.state.errorMessages.length; i++) {
+      allErrorMessages.push(
+        <li key={uuid.v4()}>{this.state.errorMessages[i]}</li>
+      );
     }
 
     return (
-      <div className="App">
+      <div className="App" style={{ maxWidth: "900px", marginTop: "5px" }}>
         <Helmet>
           <meta charSet="utf-8" />
           <title>Callbreak</title>
+          <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="./images/apple-touch-icon.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="./images/favicon-32x32.png"
+          />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="./images/favicon-16x16.png"
+          />
+          <link rel="manifest" href="./images/site.webmanifest" />
         </Helmet>
-        <header style={{ height: "60px", textAlign: "left", width: "100%" }}>
-          <h1>Callbreak</h1>
+        <header
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            height: "60px",
+            textAlign: "left",
+            width: "100%"
+          }}
+        >
+          <h1>
+            Call Break{" "}
+            <span
+              style={{
+                textDecoration: "underline",
+                textDecorationColor: "#b71c1c"
+              }}
+            >
+              &#x2660; {/*spade ♠*/}
+            </span>
+          </h1>
         </header>
         <div style={{ minHeight: "calc(100vh - 150px)" }}>
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -217,7 +263,10 @@ export default class App extends React.Component {
             <tbody>
               <tr key={"Round" + this.state.round}>
                 <td style={{ textAlign: "center", border: "solid 1px black" }}>
-                  Ongoing
+                  Ongoing{" "}
+                  <span style={{ fontSize: "0.7em" }}>
+                    (<i>Round {this.state.ongoingRound}</i>)
+                  </span>
                 </td>
                 <InputCell>
                   <ScoreInput
@@ -254,7 +303,7 @@ export default class App extends React.Component {
           </table>
           <ErrorDiv error={this.state.error}>
             <h3>The input is not valid.</h3>
-            <ul>{errorMessages}</ul>
+            <ul>{allErrorMessages}</ul>
           </ErrorDiv>
         </div>
         <footer style={{ height: "60px", textAlign: "center" }}>

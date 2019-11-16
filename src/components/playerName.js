@@ -10,7 +10,7 @@ const Input = styled.input`
   height: 30px;
   font-size: 1em;
   font-weight: 700;
-  color: ${props => (props.editing ? "white" : "#2962ff")};
+  color: ${props => (props.editing ? "black" : "#2962ff")};
   background-color: ${props => (props.editing ? "#286cc440" : "white")};
   &:hover {
     cursor: ${props => (props.editing ? "initial" : "pointer")};
@@ -24,7 +24,11 @@ export default class PlayerName extends React.Component {
   };
 
   handleChange = event => {
-    this.setState({ value: event.target.value });
+    this.setState({ value: event.target.value }, () => {
+      if (this.state.value === "") {
+        this.setState({ value: this.props.name });
+      }
+    });
   };
   handleFocus = event => {
     event.target.select();

@@ -45,12 +45,7 @@ export default class ScoreRow extends React.Component {
       fs = "italic";
     }
 
-    /*let scores = [];
-    scores.push(
-      <GameCell>
-        {["i", "ii", "iii", "iv", "Final"][this.props.gameNumber]}
-      </GameCell>
-    );
+    /*let scores = [];    
     for (let ind = 0; ind < 4; i++) {
       scores.push(
         <GameCell>
