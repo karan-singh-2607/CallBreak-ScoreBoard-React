@@ -36,7 +36,7 @@ export default class App extends React.Component {
     p3: 0,
     p4: 0,
     allowClick: true,
-    error: false,
+    errorInInput: false,
     errorMessages: []
   };
   rounds = { p1: [], p2: [], p3: [], p4: [] };
@@ -60,7 +60,7 @@ export default class App extends React.Component {
       p4: 0,
       allowClick: true,
       errorMessages: [],
-      error: false
+      errorInInput: false
     });
     this.playerCalls = [];
     this.playerScores = [];
@@ -121,7 +121,10 @@ export default class App extends React.Component {
   order = ["p1", "p2", "p3", "p4"];
   handleScoreInput = ar => {
     if (this.isValid(ar)) {
-      this.setState({ gameNumber: this.state.gameNumber + 1, error: false });
+      this.setState({
+        gameNumber: this.state.gameNumber + 1,
+        errorInInput: false
+      });
       let procScores = this.processScores(
         ar,
         this.playerCalls[this.playerCalls.length - 1]
@@ -148,7 +151,7 @@ export default class App extends React.Component {
       }
       this.setState({ gameState: "call" });
     } else {
-      this.setState({ error: true });
+      this.setState({ errorInInput: true });
     }
   };
 
@@ -171,11 +174,11 @@ export default class App extends React.Component {
       this.setState({
         gameState: "play",
         label: "Record Hands",
-        error: false
+        errorInInput: false
       });
       this.playerCalls.push(ar);
     } else {
-      this.setState({ error: true });
+      this.setState({ errorInInput: true });
     }
   };
 
@@ -249,7 +252,14 @@ export default class App extends React.Component {
           }}
         >
           <h1>
-            Call Break <sup>&#x2660; {/*spade ♠*/}</sup>
+            <a
+              href="https://github.com/darshanbaral/callbreak"
+              target="_blank"
+              style={{ textDecoration: "none", color: "#0c20c4" }}
+            >
+              Call Break
+            </a>{" "}
+            <sup>&#x2660;</sup>
           </h1>
         </header>
         <div style={{ minHeight: "calc(100vh - 150px)" }}>
@@ -312,7 +322,7 @@ export default class App extends React.Component {
               <TableBottom processedScores={this.processedScores} />
             </tbody>
           </table>
-          <ErrorDiv error={this.state.error}>
+          <ErrorDiv error={this.state.errorInInput}>
             <h3>The input is not valid.</h3>
             <ul>{allErrorMessages}</ul>
           </ErrorDiv>

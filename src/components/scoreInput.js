@@ -4,6 +4,7 @@ import styled from "styled-components";
 const Input = styled.input`
   text-align: center;
   border: none;
+  box-sizing: border-box;
   width: 97%;
   height: 80%;
   margin: auto;
