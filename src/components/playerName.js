@@ -25,9 +25,7 @@ export default class PlayerName extends React.Component {
 
   handleChange = event => {
     this.setState({ value: event.target.value }, () => {
-      if (this.state.value === "") {
-        this.setState({ value: this.props.name });
-      }
+      this.props.onChange(this.props.id, this.state.value);
     });
   };
   handleFocus = event => {

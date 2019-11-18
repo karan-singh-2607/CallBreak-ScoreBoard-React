@@ -9,6 +9,9 @@ const HeaderCell = styled.td`
 `;
 
 export default class TableHead extends React.Component {
+  onChange = (id, name) => {
+    this.props.onChange(id, name);
+  };
   render() {
     return (
       <thead>
@@ -17,16 +20,32 @@ export default class TableHead extends React.Component {
             <strong>Game</strong>
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="p1" />
+            <PlayerName
+              id="p1-name"
+              name={this.props.playerNames[0]}
+              onChange={this.onChange}
+            />
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="p2" />
+            <PlayerName
+              id="p2-name"
+              name={this.props.playerNames[1]}
+              onChange={this.onChange}
+            />
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="p3" />
+            <PlayerName
+              id="p3-name"
+              name={this.props.playerNames[2]}
+              onChange={this.onChange}
+            />
           </HeaderCell>
           <HeaderCell>
-            <PlayerName name="p4" />
+            <PlayerName
+              id="p4-name"
+              name={this.props.playerNames[3]}
+              onChange={this.onChange}
+            />
           </HeaderCell>
         </tr>
       </thead>

@@ -30,6 +30,7 @@ export default class App extends React.Component {
     gameNumber: 0,
     gameState: "call",
     label: "Record Calls",
+    playerNames: ["p1", "p2", "p3", "p4"],
     p1: 0,
     p2: 0,
     p3: 0,
@@ -141,12 +142,24 @@ export default class App extends React.Component {
           []
         );
         totals.map((val, ind) => this.rounds[this.order[ind]].push(val));
-        console.log(this.rounds);
-        console.log(this.rounds);
       }
       this.setState({ gameState: "call" });
     } else {
       this.setState({ error: true });
+    }
+  };
+
+  onPlayerNameChange = (id, name) => {
+    let ind = ["p1-name", "p2-name", "p3-name", "p4-name"].findIndex(
+      el => el === id
+    );
+    if ((name === "") | (name === undefined)) {
+      console.log(name);
+      console.log(`Player name for player ${ind + 1} is empty`);
+    } else {
+      let names = this.state.playerNames;
+      names[ind] = name;
+      this.setState({ playerNames: names });
     }
   };
 
@@ -259,7 +272,10 @@ export default class App extends React.Component {
           </div>
           <hr />
           <table>
-            <TableHead />
+            <TableHead
+              playerNames={this.state.playerNames}
+              onChange={this.onPlayerNameChange}
+            />
             <tbody>
               <tr key={"Round" + this.state.round}>
                 <td style={{ textAlign: "center", border: "solid 1px black" }}>
