@@ -11,29 +11,28 @@ const HeaderCell = styled.td`
 
 export default class TableBottom extends React.Component {
   render() {
-    let sum = [0, 0, 0, 0];
-    for (let i = 0; i < this.props.processedScores.length; i++) {
-      sum[0] = Number(sum[0]) + Number(this.props.processedScores[i][0]);
-      sum[1] = Number(sum[1]) + Number(this.props.processedScores[i][1]);
-      sum[2] = Number(sum[2]) + Number(this.props.processedScores[i][2]);
-      sum[3] = Number(sum[3]) + Number(this.props.processedScores[i][3]);
-    }
+    let ongoingScoreSum = this.props.processedScores.reduce(
+      (r, a) =>
+        a.map((b, i) => Math.round((Number(r[i] || 0) + Number(b)) * 10) / 10),
+      []
+    );
+
     return (
       <tr>
         <HeaderCell width="120">
           <strong>Total</strong>
         </HeaderCell>
         <HeaderCell>
-          <strong>{sum[0]}</strong>
+          <strong>{ongoingScoreSum[0]}</strong>
         </HeaderCell>
         <HeaderCell>
-          <strong>{sum[1]}</strong>
+          <strong>{ongoingScoreSum[1]}</strong>
         </HeaderCell>
         <HeaderCell>
-          <strong>{sum[2]}</strong>
+          <strong>{ongoingScoreSum[2]}</strong>
         </HeaderCell>
         <HeaderCell>
-          <strong>{sum[3]}</strong>
+          <strong>{ongoingScoreSum[3]}</strong>
         </HeaderCell>
       </tr>
     );

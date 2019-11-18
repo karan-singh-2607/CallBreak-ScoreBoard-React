@@ -138,7 +138,10 @@ export default class App extends React.Component {
         });
 
         let totals = this.processedScores.reduce(
-          (r, a) => a.map((b, i) => Number(r[i] || 0) + Number(b)),
+          (r, a) =>
+            a.map(
+              (b, i) => Math.round((Number(r[i] || 0) + Number(b)) * 10) / 10
+            ),
           []
         );
         totals.map((val, ind) => this.rounds[this.order[ind]].push(val));
@@ -246,15 +249,7 @@ export default class App extends React.Component {
           }}
         >
           <h1>
-            Call Break{" "}
-            <span
-              style={{
-                textDecoration: "underline",
-                textDecorationColor: "#b71c1c"
-              }}
-            >
-              &#x2660; {/*spade ♠*/}
-            </span>
+            Call Break <sup>&#x2660; {/*spade ♠*/}</sup>
           </h1>
         </header>
         <div style={{ minHeight: "calc(100vh - 150px)" }}>
