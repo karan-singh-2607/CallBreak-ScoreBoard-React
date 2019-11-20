@@ -302,7 +302,8 @@ export default class App extends React.Component {
           </MessageDiv>
         </div>
         <footer style={{ height: "60px", textAlign: "center" }}>
-          Made by <a href="https://www.darshanbaral.com">Darshan</a>. Fork{" "}
+          &copy; 2019 <a href="https://www.darshanbaral.com">Darshan</a>{" "}
+          &middot; Fork{" "}
           <a
             href="https://github.com/darshanbaral/callbreak"
             target="_blank"
