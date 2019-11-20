@@ -19,6 +19,10 @@ export default class TableBottom extends React.Component {
       []
     );
 
+    if (ongoingScoreSum.length === 0) {
+      ongoingScoreSum = [0, 0, 0, 0];
+    }
+
     return (
       <Fragment>
         <Div className="grid-element">

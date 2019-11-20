@@ -11,9 +11,7 @@ export default class SButton extends React.Component {
       <Button
         style={{
           cursor: cursor,
-          marginRight: "20px",
-          marginLeft: "20px",
-          width: "130px"
+          width: "100px"
         }}
         variant={this.props.allowClick ? this.props.type : "secondary"}
         onClick={this.handleClick}

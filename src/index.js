@@ -219,19 +219,11 @@ export default class App extends React.Component {
     return (
       <div className="App container mt-2">
         <Head />
-        <h1>
-          <a
-            href="https://github.com/darshanbaral/callbreak"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ textDecoration: "none" }}
-          >
-            Call Break
-          </a>{" "}
-          <sup>&#x2660;</sup>
+        <h1 className="mb-2">
+          Call Break <sup>&#x2660;</sup>
         </h1>
         <div style={{ minHeight: "calc(100vh - 150px)" }}>
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <SButton
               label={this.state.label}
               allowClick={this.state.allowClick}
@@ -310,7 +302,14 @@ export default class App extends React.Component {
           </MessageDiv>
         </div>
         <footer style={{ height: "60px", textAlign: "center" }}>
-          Made by <a href="https://www.darshanbaral.com">Darshan</a>
+          Made by <a href="https://www.darshanbaral.com">Darshan</a>. Fork{" "}
+          <a
+            href="https://github.com/darshanbaral/callbreak"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            here
+          </a>
         </footer>
       </div>
     );
