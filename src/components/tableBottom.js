@@ -1,11 +1,13 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 import styled from "styled-components";
 
-const HeaderCell = styled.td`
-  text-align: center;
-  padding: 3px;
-  height: 35px;
+const Div = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  height: 30px;
   border: solid 1px black;
 `;
 
@@ -18,23 +20,23 @@ export default class TableBottom extends React.Component {
     );
 
     return (
-      <tr>
-        <HeaderCell width="120">
+      <Fragment>
+        <Div className="grid-element">
           <strong>Total</strong>
-        </HeaderCell>
-        <HeaderCell>
+        </Div>
+        <Div className="grid-element">
           <strong>{ongoingScoreSum[0]}</strong>
-        </HeaderCell>
-        <HeaderCell>
+        </Div>
+        <Div className="grid-element">
           <strong>{ongoingScoreSum[1]}</strong>
-        </HeaderCell>
-        <HeaderCell>
+        </Div>
+        <Div className="grid-element">
           <strong>{ongoingScoreSum[2]}</strong>
-        </HeaderCell>
-        <HeaderCell>
+        </Div>
+        <Div className="grid-element">
           <strong>{ongoingScoreSum[3]}</strong>
-        </HeaderCell>
-      </tr>
+        </Div>
+      </Fragment>
     );
   }
 }

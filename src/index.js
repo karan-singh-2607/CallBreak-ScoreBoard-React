@@ -1,25 +1,23 @@
-import React from "react";
+import React, { Fragment } from "react";
 import ReactDOM from "react-dom";
 import styled from "styled-components";
-import Button from "./components/button";
+import SButton from "./components/button";
 import ScoreInput from "./components/scoreInput";
 import TableHead from "./components/tableHead";
 import TableBottom from "./components/tableBottom";
 import ScoreRow from "./components/scoreRow";
 import uuid from "uuid";
-import { Helmet } from "react-helmet";
+import Head from "./components/head";
 
+import "./bootstrap-4.3.1-dist/css/bootstrap.min.css";
 import "./styles.css";
 
-const InputCell = styled.td`
+const InputCell = styled.div`
   min-width: 50px;
-  height: 30px;
-  border: 1px solid;
 `;
 
-const ErrorDiv = styled.div`
-  color: red;
-  display: ${props => (props.error ? "block" : "none")};
+const MessageDiv = styled.div`
+  display: ${props => (props.display ? "block" : "none")};
 `;
 
 export default class App extends React.Component {
@@ -68,6 +66,7 @@ export default class App extends React.Component {
   };
 
   isValid = ar => {
+    ar = ar.map(el => Number(el));
     let [minimum, maximum, total] =
       this.state.gameState === "call" ? [1, 8, 32] : [0, 13, 13];
     let inputType = this.state.gameState === "call" ? "calls" : "hands";
@@ -85,14 +84,14 @@ export default class App extends React.Component {
     ];
     let check = [];
     let errorMessages = [];
-    check.push(ar.some(el => !Number.isInteger(Number(el))));
-    check.push(ar.some(el => Number(el) < minimum));
-    check.push(ar.some(el => Number(el) > maximum));
+    check.push(ar.some(el => !Number.isInteger(el)));
+    check.push(ar.some(el => el < minimum));
+    check.push(ar.some(el => el > maximum));
 
     if (this.state.gameState === "call") {
-      check.push(ar.reduce((a, b) => Number(a) + Number(b), 0) > total);
+      check.push(ar.reduce((a, b) => a + b, 0) > total);
     } else {
-      check.push(ar.reduce((a, b) => Number(a) + Number(b), 0) !== total);
+      check.push(ar.reduce((a, b) => a + b, 0) !== total);
     }
 
     check.forEach((el, i) => {
@@ -160,7 +159,6 @@ export default class App extends React.Component {
       el => el === id
     );
     if ((name === "") | (name === undefined)) {
-      console.log(name);
       console.log(`Player name for player ${ind + 1} is empty`);
     } else {
       let names = this.state.playerNames;
@@ -219,113 +217,97 @@ export default class App extends React.Component {
     }
 
     return (
-      <div className="App" style={{ maxWidth: "900px", marginTop: "5px" }}>
-        <Helmet>
-          <meta charSet="utf-8" />
-          <title>Callbreak</title>
-          <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="./images/apple-touch-icon.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="./images/favicon-32x32.png"
-          />
-          <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="./images/favicon-16x16.png"
-          />
-          <link rel="manifest" href="./images/site.webmanifest" />
-        </Helmet>
-        <header
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            height: "60px",
-            textAlign: "left",
-            width: "100%"
-          }}
-        >
-          <h1>
-            <a
-              href="https://github.com/darshanbaral/callbreak"
-              target="_blank"
-              style={{ textDecoration: "none", color: "#0c20c4" }}
-            >
-              Call Break
-            </a>{" "}
-            <sup>&#x2660;</sup>
-          </h1>
-        </header>
+      <div className="App container mt-2">
+        <Head />
+        <h1>
+          <a
+            href="https://github.com/darshanbaral/callbreak"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "none" }}
+          >
+            Call Break
+          </a>{" "}
+          <sup>&#x2660;</sup>
+        </h1>
         <div style={{ minHeight: "calc(100vh - 150px)" }}>
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <Button
+            <SButton
               label={this.state.label}
               allowClick={this.state.allowClick}
               onClick={this.handleClick}
+              type="primary"
             />
-            <Button
+            <SButton
               label="New Round"
               allowClick={true}
               onClick={this.newRound}
+              type="warning"
             />
           </div>
           <hr />
-          <table>
+          <div className="grid-container">
             <TableHead
               playerNames={this.state.playerNames}
               onChange={this.onPlayerNameChange}
             />
-            <tbody>
-              <tr key={"Round" + this.state.round}>
-                <td style={{ textAlign: "center", border: "solid 1px black" }}>
-                  Ongoing{" "}
-                  <span style={{ fontSize: "0.7em" }}>
-                    (<i>Round {this.state.ongoingRound}</i>)
-                  </span>
-                </td>
-                <InputCell>
-                  <ScoreInput
-                    id="p1"
-                    gameState={this.state.gameState}
-                    onChange={this.handleChange}
-                  />
-                </InputCell>
-                <InputCell>
-                  <ScoreInput
-                    id="p2"
-                    gameState={this.state.gameState}
-                    onChange={this.handleChange}
-                  />
-                </InputCell>
-                <InputCell>
-                  <ScoreInput
-                    id="p3"
-                    gameState={this.state.gameState}
-                    onChange={this.handleChange}
-                  />
-                </InputCell>
-                <InputCell>
-                  <ScoreInput
-                    id="p4"
-                    gameState={this.state.gameState}
-                    onChange={this.handleChange}
-                  />
-                </InputCell>
-              </tr>
-              {rows}
-              <TableBottom processedScores={this.processedScores} />
-            </tbody>
-          </table>
-          <ErrorDiv error={this.state.errorInInput}>
-            <h3>The input is not valid.</h3>
+
+            <Fragment key={"Round" + this.state.round}>
+              <div
+                style={{
+                  textAlign: "center",
+                  lineHeight: "18px"
+                }}
+              >
+                Ongoing{" "}
+                <span style={{ fontSize: "0.7em" }}>
+                  (<i>Round {this.state.ongoingRound}</i>)
+                </span>
+              </div>
+              <InputCell>
+                <ScoreInput
+                  id="p1"
+                  gameState={this.state.gameState}
+                  onChange={this.handleChange}
+                />
+              </InputCell>
+              <InputCell>
+                <ScoreInput
+                  id="p2"
+                  gameState={this.state.gameState}
+                  onChange={this.handleChange}
+                />
+              </InputCell>
+              <InputCell>
+                <ScoreInput
+                  id="p3"
+                  gameState={this.state.gameState}
+                  onChange={this.handleChange}
+                />
+              </InputCell>
+              <InputCell>
+                <ScoreInput
+                  id="p4"
+                  gameState={this.state.gameState}
+                  onChange={this.handleChange}
+                />
+              </InputCell>
+            </Fragment>
+            {rows}
+            <TableBottom processedScores={this.processedScores} />
+          </div>
+          <MessageDiv
+            display={this.state.errorInInput}
+            className="border border-danger mt-4 p-2"
+          >
+            <h4>Error. The input is not valid.</h4>
+          </MessageDiv>
+          <MessageDiv
+            display={this.state.errorInInput}
+            className="border border-warning mt-4 p-2"
+          >
             <ul>{allErrorMessages}</ul>
-          </ErrorDiv>
+          </MessageDiv>
         </div>
         <footer style={{ height: "60px", textAlign: "center" }}>
           Made by <a href="https://www.darshanbaral.com">Darshan</a>

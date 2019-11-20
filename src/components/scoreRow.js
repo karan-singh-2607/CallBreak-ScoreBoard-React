@@ -1,11 +1,5 @@
-import React from "react";
-
+import React, { Fragment } from "react";
 import styled from "styled-components";
-
-const GameCell = styled.td`
-  text-align: center;
-  padding: 3px;
-`;
 
 const CallSpan = styled.span`
   margin-right: 0.6em;
@@ -45,39 +39,34 @@ export default class ScoreRow extends React.Component {
       fs = "italic";
     }
 
-    /*let scores = [];    
-    for (let ind = 0; ind < 4; i++) {
-      scores.push(
-        <GameCell>
-          <CallSpan>{callValue[ind]}</CallSpan>
-          <ScoreSpan negative={negative[ind]}>{val[ind]}</ScoreSpan>
-        </GameCell>
-      );
-    }*/
+    const Div = styled.div`
+      background-color: ${bg};
+      color: ${fc};
+      font-style: ${fs};
+      text-align: center;
+    `;
 
     return (
-      <tr style={{ backgroundColor: bg, color: fc, fontStyle: fs }}>
-        <GameCell>
-          {["i", "ii", "iii", "iv", "Final"][this.props.gameNumber]}
-        </GameCell>
+      <Fragment>
+        <Div>{["i", "ii", "iii", "iv", "Final"][this.props.gameNumber]}</Div>
 
-        <GameCell>
+        <Div>
           <CallSpan>{callValue[0]}</CallSpan>
           <ScoreSpan negative={negative[0]}>{val[0]}</ScoreSpan>
-        </GameCell>
-        <GameCell>
+        </Div>
+        <Div>
           <CallSpan>{callValue[1]}</CallSpan>
           <ScoreSpan negative={negative[1]}>{val[1]}</ScoreSpan>
-        </GameCell>
-        <GameCell>
+        </Div>
+        <Div>
           <CallSpan>{callValue[2]}</CallSpan>
           <ScoreSpan negative={negative[2]}>{val[2]}</ScoreSpan>
-        </GameCell>
-        <GameCell>
+        </Div>
+        <Div>
           <CallSpan>{callValue[3]}</CallSpan>
           <ScoreSpan negative={negative[3]}>{val[3]}</ScoreSpan>
-        </GameCell>
-      </tr>
+        </Div>
+      </Fragment>
     );
   }
 }

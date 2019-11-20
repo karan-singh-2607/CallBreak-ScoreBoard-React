@@ -1,30 +1,15 @@
 import React from "react";
-import styled from "styled-components";
-
-const Input = styled.input`
-  text-align: center;
-  border: none;
-  box-sizing: border-box;
-  width: 97%;
-  height: 80%;
-  margin: auto;
-  display: block;
-  font-size: 1em;
-  background-color: ${props => (props.valid ? "#286cc440" : "#d75d5d")};
-  &:focus {
-    outline: solid 1px #2962ff;
-  }
-`;
+import Form from "react-bootstrap/Form";
 
 export default class ScoreInput extends React.Component {
-  state = { value: "", placeholder: "0", valid: true };
+  state = { value: "", placeholder: "0", isValid: true };
   handleChange = event => {
     const [min, max] = this.props.gameState === "call" ? [1, 8] : [0, 13];
     const val = Number(event.target.value);
     if (val < min || val > max || isNaN(val)) {
-      this.setState({ valid: false });
+      this.setState({ isValid: false });
     } else {
-      this.setState({ valid: true });
+      this.setState({ isValid: true });
     }
     this.setState({ value: event.target.value });
     this.props.onChange(this.props.id, event.target.value);
@@ -33,12 +18,12 @@ export default class ScoreInput extends React.Component {
     this.setState({ placeholder: "0" });
   };
   handleFocus = () => {
-    this.setState({ placeholder: "" });
-    this.setState({ value: "" });
+    this.setState({ placeholder: "", value: "" });
   };
   render() {
     return (
-      <Input
+      <Form.Control
+        style={{ textAlign: "center" }}
         id={this.props.id}
         type="tel"
         placeholder={this.state.placeholder}
@@ -46,7 +31,7 @@ export default class ScoreInput extends React.Component {
         onChange={this.handleChange}
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
-        valid={this.state.valid}
+        isInvalid={!this.state.isValid}
       />
     );
   }

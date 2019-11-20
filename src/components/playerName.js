@@ -44,7 +44,7 @@ export default class PlayerName extends React.Component {
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         value={this.state.value}
-        placeholder={this.props.id.split("-")[0]}
+        placeholder={this.props.id}
         editing={this.state.editing}
         title="Click to edit"
       />
