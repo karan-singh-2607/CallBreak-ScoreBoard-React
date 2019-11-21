@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Nunito&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Nunito|Roboto+Mono&display=swap');
 .App {
   font-family: "Nunito", sans-serif;
   display: flex;

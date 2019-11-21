@@ -26,7 +26,10 @@ export default class ScoreInput extends React.Component {
         style={{
           textAlign: "center",
           border: "1px solid #007bff",
-          fontWeight: "700"
+          fontWeight: "400",
+          height: "100%",
+          fontFamily: "'Roboto Mono', monospace",
+          fontSize: "1.1em"
         }}
         id={this.props.id}
         type="tel"

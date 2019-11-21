@@ -263,7 +263,7 @@ export default class App extends React.Component {
     }
 
     return (
-      <div className="App container mt-2">
+      <div className="App container mt-2 mb-2 border border-primary rounded">
         <Head />
         <Overlay
           showOverlay={this.state.showOverlay}
@@ -275,7 +275,10 @@ export default class App extends React.Component {
           Call Break <sup>&#x2660;</sup>
         </h1>
         <div style={{ minHeight: "calc(100vh - 120px)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{ display: "flex", justifyContent: "space-between" }}
+            className="border-bottom border-primary pb-3 mb-3"
+          >
             <SButton
               label={this.state.label}
               allowClick={this.state.allowClick}
@@ -289,7 +292,7 @@ export default class App extends React.Component {
               type="warning"
             />
           </div>
-          <hr />
+
           <div className="grid-container">
             <TableHead
               playerNames={this.state.playerNames}
@@ -297,11 +300,12 @@ export default class App extends React.Component {
             />
             <Fragment key={"Round" + this.state.round}>
               <div
-                className="bg-success text-white"
+                className="bg-success text-white p-1"
                 title="Enter calls and hands in this row"
                 style={{
                   textAlign: "center",
-                  lineHeight: "18px"
+                  lineHeight: "15px",
+                  fontSize: "0.9em"
                 }}
               >
                 Ongoing{" "}
