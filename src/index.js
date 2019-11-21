@@ -263,7 +263,7 @@ export default class App extends React.Component {
     }
 
     return (
-      <div className="App container mt-2 mb-2 border border-primary rounded">
+      <div className="App container mt-2">
         <Head />
         <Overlay
           showOverlay={this.state.showOverlay}

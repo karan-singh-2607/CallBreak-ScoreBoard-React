@@ -45,6 +45,9 @@ export default class ScoreRow extends React.Component {
       font-style: ${fs};
       text-align: center;
       height: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     `;
 
     let rows = [];
