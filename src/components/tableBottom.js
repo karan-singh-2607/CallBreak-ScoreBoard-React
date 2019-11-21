@@ -23,23 +23,23 @@ export default class TableBottom extends React.Component {
       ongoingScoreSum = [0, 0, 0, 0];
     }
 
+    let totals = [];
+    for (let i = 0; i < 4; i++) {
+      totals.push(
+        <Div
+          key={this.props.processedScores.length + " " + i}
+          className="grid-element"
+        >
+          <strong>{ongoingScoreSum[i]}</strong>
+        </Div>
+      );
+    }
     return (
       <Fragment>
         <Div className="grid-element">
-          <strong>Total</strong>
+          <strong title="This row shows the running total">Total</strong>
         </Div>
-        <Div className="grid-element">
-          <strong>{ongoingScoreSum[0]}</strong>
-        </Div>
-        <Div className="grid-element">
-          <strong>{ongoingScoreSum[1]}</strong>
-        </Div>
-        <Div className="grid-element">
-          <strong>{ongoingScoreSum[2]}</strong>
-        </Div>
-        <Div className="grid-element">
-          <strong>{ongoingScoreSum[3]}</strong>
-        </Div>
+        {totals}
       </Fragment>
     );
   }

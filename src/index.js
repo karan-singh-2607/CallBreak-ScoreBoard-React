@@ -8,6 +8,8 @@ import TableBottom from "./components/tableBottom";
 import ScoreRow from "./components/scoreRow";
 import uuid from "uuid";
 import Head from "./components/head";
+import Overlay from "./components/overlay";
+import Footer from "./components/footer";
 
 import "./bootstrap-4.3.1-dist/css/bootstrap.min.css";
 import "./styles.css";
@@ -17,7 +19,8 @@ const InputCell = styled.div`
 `;
 
 const MessageDiv = styled.div`
-  display: ${props => (props.display ? "block" : "none")};
+  border-radius: 5px;
+  display: ${props => (props.show ? "block" : "none")};
 `;
 
 export default class App extends React.Component {
@@ -35,12 +38,16 @@ export default class App extends React.Component {
     p4: 0,
     allowClick: true,
     errorInInput: false,
-    errorMessages: []
+    errorMessages: [],
+    warningMessages: "",
+    showOverlay: false
   };
   rounds = { p1: [], p2: [], p3: [], p4: [] };
   playerCalls = [];
   playerScores = [];
   processedScores = [];
+  gameCount = 5;
+  order = ["p1", "p2", "p3", "p4"];
 
   newRound = () => {
     this.setState({
@@ -58,7 +65,8 @@ export default class App extends React.Component {
       p4: 0,
       allowClick: true,
       errorMessages: [],
-      errorInInput: false
+      errorInInput: false,
+      showOverlay: false
     });
     this.playerCalls = [];
     this.playerScores = [];
@@ -66,7 +74,6 @@ export default class App extends React.Component {
   };
 
   isValid = ar => {
-    ar = ar.map(el => Number(el));
     let [minimum, maximum, total] =
       this.state.gameState === "call" ? [1, 8, 32] : [0, 13, 13];
     let inputType = this.state.gameState === "call" ? "calls" : "hands";
@@ -104,22 +111,29 @@ export default class App extends React.Component {
   };
 
   processScores = (hands, calls) => {
+    hands = hands.map(el => Number(el));
+    calls = calls.map(el => Number(el));
     let processedScores = [];
     for (let i = 0; i < hands.length; i++) {
-      if (Number(hands[i]) >= Number(calls[i])) {
-        processedScores[i] =
-          calls[i] + "." + (Number(hands[i]) - Number(calls[i]));
+      if (hands[i] >= calls[i]) {
+        processedScores[i] = calls[i] + "." + (hands[i] - calls[i]);
       } else {
-        processedScores[i] = -1 * Number(calls[i]);
+        processedScores[i] = -1 * calls[i];
       }
     }
     return processedScores;
   };
 
-  gameCount = 5;
-  order = ["p1", "p2", "p3", "p4"];
   handleScoreInput = ar => {
     if (this.isValid(ar)) {
+      if (ar.some(el => el >= 8)) {
+        let callsForThisGame = this.playerCalls[this.playerCalls.length - 1];
+        callsForThisGame = callsForThisGame.map(el => Number(el));
+        let callsGeEight = [callsForThisGame.findIndex(el => el >= 8)];
+        if (callsGeEight.includes(ar.findIndex(el => el >= 8))) {
+          console.log("here");
+        }
+      }
       this.setState({
         gameNumber: this.state.gameNumber + 1,
         errorInInput: false
@@ -159,11 +173,11 @@ export default class App extends React.Component {
       el => el === id
     );
     if ((name === "") | (name === undefined)) {
-      console.log(`Player name for player ${ind + 1} is empty`);
+      this.setState({ warningMessages: "Player name(s) empty" });
     } else {
       let names = this.state.playerNames;
       names[ind] = name;
-      this.setState({ playerNames: names });
+      this.setState({ playerNames: names, warningMessages: "" });
     }
   };
 
@@ -185,7 +199,7 @@ export default class App extends React.Component {
       return;
     }
     const { p1, p2, p3, p4 } = this.state;
-    const userInput = [p1, p2, p3, p4];
+    const userInput = [p1, p2, p3, p4].map(el => Number(el));
     this.state.gameState === "call"
       ? this.handleCallInput(userInput)
       : this.handleScoreInput(userInput);
@@ -195,9 +209,19 @@ export default class App extends React.Component {
     this.setState({ [playerNum]: value });
   };
 
+  toggleDisplay = () => {
+    if (
+      (this.state.gameNumber === 0 && this.state.gameState === "call") ||
+      !this.state.allowClick
+    ) {
+      this.newRound();
+    } else {
+      this.setState({ showOverlay: !this.state.showOverlay });
+    }
+  };
+
   render() {
     let rows = [];
-
     for (let i = 0; i < this.playerCalls.length; i++) {
       rows.push(
         <ScoreRow
@@ -209,6 +233,28 @@ export default class App extends React.Component {
       );
     }
 
+    let inputs = [];
+    this.order.forEach(el => {
+      inputs.push(
+        <InputCell>
+          <ScoreInput
+            id={el}
+            gameState={this.state.gameState}
+            onChange={this.handleChange}
+          />
+        </InputCell>
+      );
+    });
+
+    let history = "";
+    /*for (let i = 0; i < this.rounds.p1.length; i++) {
+      let temp = [];
+      for (let nm in this.rounds) {
+        temp.push(Number(this.rounds[nm][i]));
+      }
+      let uniqueScores = [...new Set(temp)].sort();
+    }*/
+
     let allErrorMessages = [];
     for (let i = 0; i < this.state.errorMessages.length; i++) {
       allErrorMessages.push(
@@ -219,10 +265,16 @@ export default class App extends React.Component {
     return (
       <div className="App container mt-2">
         <Head />
+        <Overlay
+          showOverlay={this.state.showOverlay}
+          yesFunction={this.newRound}
+          noFunction={this.toggleDisplay}
+        />
+
         <h1 className="mb-2">
           Call Break <sup>&#x2660;</sup>
         </h1>
-        <div style={{ minHeight: "calc(100vh - 150px)" }}>
+        <div style={{ minHeight: "calc(100vh - 120px)" }}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <SButton
               label={this.state.label}
@@ -233,7 +285,7 @@ export default class App extends React.Component {
             <SButton
               label="New Round"
               allowClick={true}
-              onClick={this.newRound}
+              onClick={this.toggleDisplay}
               type="warning"
             />
           </div>
@@ -243,9 +295,10 @@ export default class App extends React.Component {
               playerNames={this.state.playerNames}
               onChange={this.onPlayerNameChange}
             />
-
             <Fragment key={"Round" + this.state.round}>
               <div
+                className="bg-success text-white"
+                title="Enter calls and hands in this row"
                 style={{
                   textAlign: "center",
                   lineHeight: "18px"
@@ -256,62 +309,32 @@ export default class App extends React.Component {
                   (<i>Round {this.state.ongoingRound}</i>)
                 </span>
               </div>
-              <InputCell>
-                <ScoreInput
-                  id="p1"
-                  gameState={this.state.gameState}
-                  onChange={this.handleChange}
-                />
-              </InputCell>
-              <InputCell>
-                <ScoreInput
-                  id="p2"
-                  gameState={this.state.gameState}
-                  onChange={this.handleChange}
-                />
-              </InputCell>
-              <InputCell>
-                <ScoreInput
-                  id="p3"
-                  gameState={this.state.gameState}
-                  onChange={this.handleChange}
-                />
-              </InputCell>
-              <InputCell>
-                <ScoreInput
-                  id="p4"
-                  gameState={this.state.gameState}
-                  onChange={this.handleChange}
-                />
-              </InputCell>
+              {inputs}
             </Fragment>
             {rows}
             <TableBottom processedScores={this.processedScores} />
           </div>
+          {history}
           <MessageDiv
-            display={this.state.errorInInput}
+            style={{ backgroundColor: "#ff000033" }}
+            show={this.state.errorInInput}
             className="border border-danger mt-4 p-2"
           >
             <h4>Error. The input is not valid.</h4>
-          </MessageDiv>
-          <MessageDiv
-            display={this.state.errorInInput}
-            className="border border-warning mt-4 p-2"
-          >
             <ul>{allErrorMessages}</ul>
           </MessageDiv>
-        </div>
-        <footer style={{ height: "60px", textAlign: "center" }}>
-          &copy; 2019 <a href="https://www.darshanbaral.com">Darshan</a>{" "}
-          &middot; Fork{" "}
-          <a
-            href="https://github.com/darshanbaral/callbreak"
-            target="_blank"
-            rel="noopener noreferrer"
+          <MessageDiv
+            style={{ backgroundColor: "#fff20033" }}
+            show={this.state.warningMessages}
+            className="border border-warning mt-4 p-2"
           >
-            here
-          </a>
-        </footer>
+            <h4>Warning</h4>
+            <ul>
+              <li>{this.state.warningMessages}</li>
+            </ul>
+          </MessageDiv>
+        </div>
+        <Footer height="60px" />
       </div>
     );
   }

@@ -6,7 +6,7 @@ export default class ScoreInput extends React.Component {
   handleChange = event => {
     const [min, max] = this.props.gameState === "call" ? [1, 8] : [0, 13];
     const val = Number(event.target.value);
-    if (val < min || val > max || isNaN(val)) {
+    if (val < min || val > max || isNaN(val) || !Number.isInteger(val)) {
       this.setState({ isValid: false });
     } else {
       this.setState({ isValid: true });
@@ -23,7 +23,11 @@ export default class ScoreInput extends React.Component {
   render() {
     return (
       <Form.Control
-        style={{ textAlign: "center" }}
+        style={{
+          textAlign: "center",
+          border: "1px solid #007bff",
+          fontWeight: "700"
+        }}
         id={this.props.id}
         type="tel"
         placeholder={this.state.placeholder}

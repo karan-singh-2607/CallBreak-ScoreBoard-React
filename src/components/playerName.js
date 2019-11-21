@@ -28,13 +28,16 @@ export default class PlayerName extends React.Component {
       this.props.onChange(this.props.id, this.state.value);
     });
   };
+
   handleFocus = event => {
     event.target.select();
     this.setState({ editing: true });
   };
+
   handleBlur = event => {
     this.setState({ editing: false });
   };
+
   render() {
     return (
       <Input

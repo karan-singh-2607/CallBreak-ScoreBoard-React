@@ -11,7 +11,7 @@ const CallSpan = styled.span`
 
 const ScoreSpan = styled.span`
   font-size: 1em;
-  font-weight: 700;
+  font-weight: 400;
   padding-left: 2px;
   padding-right: 2px;
   color: ${props => (props.negative ? "#ff7070" : "inherit")};
@@ -20,19 +20,19 @@ const ScoreSpan = styled.span`
 
 export default class ScoreRow extends React.Component {
   render() {
-    let i = this.props.gameNumber;
+    let gameNumber = this.props.gameNumber;
     let val = [];
     let callValue = [];
     let bg = "#1976d2";
     let fc = "white";
     let fs = "none";
     let negative = [];
-    if (this.props.processedScores[i]) {
-      val = this.props.processedScores[i];
-      negative = this.props.processedScores[i].map(el => el < 0);
-      callValue = this.props.calls[i];
+    if (this.props.processedScores[gameNumber]) {
+      val = this.props.processedScores[gameNumber];
+      negative = this.props.processedScores[gameNumber].map(el => el < 0);
+      callValue = this.props.calls[gameNumber];
     } else {
-      val = this.props.calls[i];
+      val = this.props.calls[gameNumber];
       callValue = ["", "", "", ""];
       bg = "#bbdefb";
       fc = "black";
@@ -46,26 +46,20 @@ export default class ScoreRow extends React.Component {
       text-align: center;
     `;
 
+    let rows = [];
+    for (let i = 0; i < val.length; i++) {
+      rows.push(
+        <Div key={fc + gameNumber + "p" + i}>
+          <CallSpan>{callValue[i]}</CallSpan>
+          <ScoreSpan negative={negative[i]}>{val[i]}</ScoreSpan>
+        </Div>
+      );
+    }
+
     return (
       <Fragment>
         <Div>{["i", "ii", "iii", "iv", "Final"][this.props.gameNumber]}</Div>
-
-        <Div>
-          <CallSpan>{callValue[0]}</CallSpan>
-          <ScoreSpan negative={negative[0]}>{val[0]}</ScoreSpan>
-        </Div>
-        <Div>
-          <CallSpan>{callValue[1]}</CallSpan>
-          <ScoreSpan negative={negative[1]}>{val[1]}</ScoreSpan>
-        </Div>
-        <Div>
-          <CallSpan>{callValue[2]}</CallSpan>
-          <ScoreSpan negative={negative[2]}>{val[2]}</ScoreSpan>
-        </Div>
-        <Div>
-          <CallSpan>{callValue[3]}</CallSpan>
-          <ScoreSpan negative={negative[3]}>{val[3]}</ScoreSpan>
-        </Div>
+        {rows}
       </Fragment>
     );
   }
