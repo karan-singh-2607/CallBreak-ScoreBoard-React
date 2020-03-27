@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito|Roboto+Mono&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Nunito|Roboto+Mono&display=swap");
 .App {
   font-family: "Nunito", sans-serif;
   display: flex;
@@ -11,4 +11,8 @@
   grid-template-columns: 90px auto auto auto auto;
   grid-template-rows: calc(1.5em + 0.75rem + 5px);
   grid-gap: 2px 2px;
+}
+.form-control::placeholder {
+  color: #d1d1d1;
+  opacity: 1;
 }
