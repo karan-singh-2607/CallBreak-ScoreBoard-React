@@ -169,15 +169,16 @@ export default class App extends React.Component {
   };
 
   onPlayerNameChange = (id, name) => {
+    let names = this.state.playerNames;
     let ind = ["p1-name", "p2-name", "p3-name", "p4-name"].findIndex(
       el => el === id
     );
-    if ((name === "") | (name === undefined)) {
+    names[ind] = name;
+    this.setState({ playerNames: names });
+    if (names.some(nm => (nm === "") | (nm === undefined))) {
       this.setState({ warningMessages: "Player name(s) empty" });
     } else {
-      let names = this.state.playerNames;
-      names[ind] = name;
-      this.setState({ playerNames: names, warningMessages: "" });
+      this.setState({ warningMessages: "" });
     }
   };
 
