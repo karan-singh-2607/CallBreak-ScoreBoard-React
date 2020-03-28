@@ -4,18 +4,20 @@ export default function Spade() {
   return (
     <span
       style={{
-        width: "40px",
-        height: "40px",
+        width: "35px",
+        height: "35px",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        borderRadius: "100%",
+        backgroundColor: "red"
       }}
     >
       <svg
         version="1.0"
         xmlns="http://www.w3.org/2000/svg"
-        width="35px"
-        height="35px"
+        width="25px"
+        height="25px"
         viewBox="0 0 1280.000000 1258.000000"
         preserveAspectRatio="xMidYMid meet"
       >
@@ -25,7 +27,7 @@ export default function Spade() {
         <g
           transform="translate(0.000000,1258.000000) scale(0.100000,-0.100000)"
           fill="#000000"
-          stroke="none"
+          stroke="yellow"
         >
           <path
             d="M6295 12570 c-132 -29 -174 -56 -454 -290 -1331 -1112 -2746 -2473
