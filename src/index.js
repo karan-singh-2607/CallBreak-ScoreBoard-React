@@ -10,6 +10,7 @@ import uuid from "uuid";
 import Head from "./components/head";
 import Overlay from "./components/overlay";
 import Footer from "./components/footer";
+import Spade from "./components/icons/spade";
 
 import "./bootstrap-4.3.1-dist/css/bootstrap.min.css";
 import "./styles.css";
@@ -271,10 +272,10 @@ export default class App extends React.Component {
           yesFunction={this.newRound}
           noFunction={this.toggleDisplay}
         />
-
-        <h1 className="mb-2">
-          Call Break <sup>&#x2660;</sup>
-        </h1>
+        <div style={{ display: "flex", flexDirection: "row" }}>
+          <h1 className="mb-2 mr-2">Call Break</h1>
+          <Spade />
+        </div>
         <div style={{ minHeight: "calc(100vh - 120px)" }}>
           <div
             style={{ display: "flex", justifyContent: "space-between" }}
