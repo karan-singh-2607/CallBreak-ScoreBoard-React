@@ -28,7 +28,7 @@ export default class TableBottom extends React.Component {
       totals.push(
         <Div
           key={this.props.processedScores.length + " " + i}
-          className="grid-element"
+          className="grid-element" style={{ height: "45px", background: "#ffc107" }}
         >
           <strong>{ongoingScoreSum[i]}</strong>
         </Div>
@@ -36,7 +36,7 @@ export default class TableBottom extends React.Component {
     }
     return (
       <Fragment>
-        <Div className="grid-element">
+        <Div className="grid-element" style={{ height: "45px", background: "#ffc107" }}>
           <strong title="This row shows the running total">Total</strong>
         </Div>
         {totals}

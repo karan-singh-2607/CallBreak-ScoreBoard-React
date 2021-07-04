@@ -7,7 +7,7 @@ export default class Head extends React.Component {
       <HelmetProvider>
         <Helmet>
           <meta charSet="utf-8" />
-          <title>Callbreak</title>
+          <title>ScoreBoard</title>
           <link
             rel="apple-touch-icon"
             sizes="180x180"

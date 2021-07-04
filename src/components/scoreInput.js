@@ -25,7 +25,7 @@ export default class ScoreInput extends React.Component {
       <Form.Control
         style={{
           textAlign: "center",
-          border: "1px solid #007bff",
+          border: "2px solid #dc3545",
           fontWeight: "400",
           height: "100%",
           fontFamily: "'Roboto Mono', monospace",

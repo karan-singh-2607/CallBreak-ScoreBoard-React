@@ -5,17 +5,24 @@ const CallSpan = styled.span`
   margin-right: 0.6em;
   font-size: 0.9em;
   text-decoration: line-through;
-  font-style: italic;
+  width: 25px;
+  height: 25px;
+    font-style: italic;
   color: #e6ee9c;
+
 `;
 
 const ScoreSpan = styled.span`
   font-size: 1em;
-  font-weight: 400;
+  font-weight: ${props => (props.negative ? "600" : "400")};
   padding-left: 2px;
   padding-right: 2px;
-  color: ${props => (props.negative ? "#ff7070" : "inherit")};
-  border-radius: ${props => (props.negative ? "2px" : "inherit")};
+  border: ${props => (props.negative ? "2px solid" : "none")};
+  color: ${props => (props.negative ? "#fff" : "inherit")};
+  border-radius: ${props => (props.negative ? "50%" : "inherit")};
+  height: ${props => (props.negative ? "25px" : "inherit")};
+  display: flex;
+  align-items: center;
 `;
 
 export default class ScoreRow extends React.Component {
@@ -23,7 +30,7 @@ export default class ScoreRow extends React.Component {
     let gameNumber = this.props.gameNumber;
     let val = [];
     let callValue = [];
-    let bg = "#1976d2";
+    let bg = "#007321";
     let fc = "white";
     let fs = "none";
     let negative = [];
@@ -44,7 +51,7 @@ export default class ScoreRow extends React.Component {
       color: ${fc};
       font-style: ${fs};
       text-align: center;
-      height: 30px;
+      height: 40px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -59,10 +66,16 @@ export default class ScoreRow extends React.Component {
         </Div>
       );
     }
+    function range(start, end) {
+      return Array(end - start + 1).fill().map((_, idx) => start + idx)
+    }
+    var result = range(1, 25);
 
+    let strNum = result.map(String)
+    // console.log(strNum)
     return (
       <Fragment>
-        <Div>{["i", "ii", "iii", "iv", "Final"][this.props.gameNumber]}</Div>
+        <Div>{strNum[this.props.gameNumber]}</Div>
         {rows}
       </Fragment>
     );

@@ -6,7 +6,8 @@ import ScoreInput from "./components/scoreInput";
 import TableHead from "./components/tableHead";
 import TableBottom from "./components/tableBottom";
 import ScoreRow from "./components/scoreRow";
-import uuid from "uuid";
+// import uuid from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 import Head from "./components/head";
 import Overlay from "./components/overlay";
 import Footer from "./components/footer";
@@ -47,7 +48,7 @@ export default class App extends React.Component {
   playerCalls = [];
   playerScores = [];
   processedScores = [];
-  gameCount = 5;
+  gameCount = 25;
   order = ["p1", "p2", "p3", "p4"];
 
   newRound = () => {
@@ -81,10 +82,10 @@ export default class App extends React.Component {
     let allErrorMessages = [
       "each input for " + inputType + " must be an integer.",
       "each input for " +
-        inputType +
-        " must be greater than than " +
-        minimum +
-        ".",
+      inputType +
+      " must be greater than than " +
+      minimum +
+      ".",
       "each input for " + inputType + " must be smaller than " + maximum + ".",
       this.state.gameState === "call"
         ? "total of calls must be smaller than " + total + "."
@@ -227,7 +228,7 @@ export default class App extends React.Component {
     for (let i = 0; i < this.playerCalls.length; i++) {
       rows.push(
         <ScoreRow
-          key={uuid.v4()}
+          key={uuidv4()}
           gameNumber={i}
           calls={this.playerCalls}
           processedScores={this.processedScores}
@@ -260,7 +261,7 @@ export default class App extends React.Component {
     let allErrorMessages = [];
     for (let i = 0; i < this.state.errorMessages.length; i++) {
       allErrorMessages.push(
-        <li key={uuid.v4()}>{this.state.errorMessages[i]}</li>
+        <li key={uuidv4()}>{this.state.errorMessages[i]}</li>
       );
     }
 
@@ -302,7 +303,7 @@ export default class App extends React.Component {
             />
             <Fragment key={"Round" + this.state.round}>
               <div
-                className="bg-success text-white p-1"
+                className="bg-danger text-white p-1"
                 title="Enter calls and hands in this row"
                 style={{
                   textAlign: "center",
