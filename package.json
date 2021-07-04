@@ -2,7 +2,7 @@
   "name": "callbreak",
   "version": "1.0.0",
   "description": "an app to record callbreak scores",
-  "homepage": "",
+  "homepage": "https://callbreakscoreboard.netlify.app/",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
